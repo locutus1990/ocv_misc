@@ -10,6 +10,13 @@
 
 using namespace std;
 
+#if(3<CV_MAJOR_VERSION)
+#define CV_AA	cv::LINE_AA
+#define CV_FILLED	cv::FILLED
+#define CV_EVENT_LBUTTONDOWN	cv::EVENT_LBUTTONDOWN
+#define CV_EVENT_LBUTTONUP	cv::EVENT_LBUTTONUP
+#endif
+
 const char winName[]="Pers image";
 vector<cv::Point2f> m_persRect;
 int m_rectIdx=-1, m_mouseUpFlag=-1;
@@ -64,7 +71,6 @@ bool m_enterFlag=false;
 	cv::Mat alpha0(baseImg.rows, baseImg.cols, transImg.type() );
 	alpha0 = cv::Scalar::all(0);
 	cv::warpPerspective(transImg, alpha0, mat,alpha0.size(), cv::INTER_CUBIC, cv::BORDER_TRANSPARENT);
-	//cv::warpPerspective(transImg, alpha0, mat,alpha0.size(), cv::INTER_NEAREST, cv::BORDER_TRANSPARENT);
 
 	//チャンネルに分解
 	cv::split(alpha0, planes_rgba);
@@ -113,8 +119,8 @@ void DrawPersRect(cv::Mat &img, const vector<cv::Point2f> &rect, const cv::Scala
 		cv::Point2f srcPt = rect[j];
 		cv::Point2f dstPt = rect[(j+1)%rect.size()];
 
-		cv::line(img, srcPt, dstPt, col, thickness, cv::LINE_AA, 0);
-		cv::rectangle(img, srcPt-anchorSize, srcPt+anchorSize, col, cv::FILLED, cv::LINE_AA);
+		cv::line(img, srcPt, dstPt, col, thickness, CV_AA, 0);
+		cv::rectangle(img, srcPt-anchorSize, srcPt+anchorSize, col, CV_FILLED, CV_AA);
 	}
 }
 
@@ -144,7 +150,7 @@ void on_mouse( int event, int x, int y, int flags, void *param)
 {
 	cv::Point2i curPt;
 	//アンカーポイントでのクリック判定
-	if(event==cv::EVENT_LBUTTONDOWN)
+	if(event==CV_EVENT_LBUTTONDOWN)
 	{
 		m_rectIdx=-1;
 		curPt = cv::Point(x, y);
@@ -170,7 +176,7 @@ void on_mouse( int event, int x, int y, int flags, void *param)
 	}
 
 	//アンカーポイントの移動終了時
-	if(event==cv::EVENT_LBUTTONUP)
+	if(event==CV_EVENT_LBUTTONUP)
 	{
 		if(m_rectIdx>-1)m_mouseUpFlag=1;
 	}
