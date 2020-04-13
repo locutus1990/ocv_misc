@@ -2,6 +2,12 @@
 OpenCVの備忘録的コード。
 OpenCV4準拠
 
-## 透過pngの表示(pictureInPicture)
-アルファチャンネル付きpngを他の画像に重ねて表示する例
-![Figure1](images/figure_001.png)
+## pictureInPicture
+
+* overlay.cpp
+画像上に別の画像を描画するサンプル
+![Figure1](figure/figure_001.jpg)
+
+* transparent.cpp
+アルファチャンネル付きpngを他の画像に重ねて表示するサンプル
+![Figure2](figure/figure_002.png)
